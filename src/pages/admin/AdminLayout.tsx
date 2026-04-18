@@ -14,7 +14,7 @@ const items = [
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false); // for small screens
   const [desktopSidebar, setDesktopSidebar] = useState(true); // for large screens
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const logout = () => {

@@ -1,5 +1,8 @@
-export const API_BASE_URL = "http://localhost:3001/api";
-export const API_BASE_IMAGE_URL = "http://localhost:3001";
+export const API_BASE_URL = "https://real-estate-backend-delta.vercel.app/api";
+export const API_BASE_IMAGE_URL = "https://real-estate-backend-delta.vercel.app";
+//https://real-estate-backend-delta.vercel.app/
+//export const API_BASE_URL = "http://localhost:3001/api";
+//export const API_BASE_IMAGE_URL = "http://localhost:3001";
 // export const API_BASE_URL = "https://enproperties-crm.onrender.com/api";
 // export const API_BASE_IMAGE_URL = "https://enproperties-crm.onrender.com";
 
