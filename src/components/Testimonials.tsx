@@ -9,7 +9,7 @@ const Testimonials: React.FC = () => {
       role: 'Business Owner',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
       rating: 5,
-      text: 'Enclave Horizon helped me find the perfect villa for my family. Their expertise in Dubai real estate is unmatched!'
+      text: 'Enclave Horizon helped me find the perfect villa for my family. Their expertise in Dubai real estate is unmatched! Great Experience.'
     },
     {
       id: 2,
