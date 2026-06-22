@@ -15,7 +15,7 @@ const AppLayout: React.FC = () => {
       <Header variant="home"/>
       <Hero
           title="Where Real Estate Meets Lifestyle"
-          subtitle="Enclave Horizon is a trusted real estate firm in Dubai, known for making property buying, selling, and renting simple."
+          subtitle="Enclave Horizon is a trusted real estate firm in Dubai, known for making property buying,renting and selling simple."
         />
         <ExploreSection/>
       <PropertyGrid />
