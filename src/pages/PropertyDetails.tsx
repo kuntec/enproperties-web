@@ -3,7 +3,7 @@ import { MapPin, BedDouble, Bath, Ruler, ParkingSquare, ShieldCheck, MessageCirc
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useParams } from 'react-router-dom';
-import { API_BASE_IMAGE_URL, API_BASE_URL } from '@/lib/api';
+import { API_BASE_URL, getImageUrl } from '@/lib/api';
 
 
 const PropertyDetails: React.FC = () => {
@@ -102,7 +102,7 @@ const PropertyDetails: React.FC = () => {
       <Header variant='home'/>
 
       {/* Hero Section */}
-      <div className="relative h-[400px] bg-cover bg-center" style={{ backgroundImage: `url('${API_BASE_IMAGE_URL + property?.image[0]}')` }}>
+      <div className="relative h-[400px] bg-cover bg-center" style={{ backgroundImage: `url('${getImageUrl(property?.image?.[0])}')` }}>
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 text-white">
           <h1 className="text-4xl font-bold">{property?.name}</h1>
@@ -168,8 +168,8 @@ const PropertyDetails: React.FC = () => {
         <div className="mb-12">
           <h3 className="text-xl font-semibold mb-4">Gallery</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {property?.image.map(g => (
-              <img key={g} src={API_BASE_IMAGE_URL + g} alt={`Gallery ${g}`} className="rounded-lg object-cover w-full h-48" />
+            {property?.image.map((g: string) => (
+              <img key={g} src={getImageUrl(g)} alt={`Gallery ${g}`} className="rounded-lg object-cover w-full h-48" />
             ))}
           </div>
         </div>

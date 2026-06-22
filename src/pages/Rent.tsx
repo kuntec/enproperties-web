@@ -23,7 +23,7 @@ const Rent: React.FC = () => {
         </div>
       </section>
 
-      <PropertyGrid />
+      <PropertyGrid purpose="Rent" />
       
     
       

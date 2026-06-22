@@ -26,12 +26,9 @@ export default function AgentLayout({ children }) {
     const token = localStorage.getItem("token");
     const userStr = localStorage.getItem("user");
     const role = userStr ? JSON.parse(userStr).role : null;
-    if (!token) {
+    if (!token || role !== "Agent") {
       navigate("/agent/login");
     } else {
-      if (role !== "agent") {
-        navigate("/agent/login");
-      }
       setIsLoading(false);
     }
   }, []);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL, API_BASE_IMAGE_URL } from "../../lib/api";
+import { API_BASE_URL, getAuthHeaders } from "../../lib/api";
 import { toast } from 'sonner';
 import {Icon} from 'react-icons-kit';
 import {eyeOff} from 'react-icons-kit/feather/eyeOff';
@@ -57,6 +57,7 @@ export default function AddAgent() {
     try {
       const res = await fetch(`${API_BASE_URL}/agents`, {
         method: "POST",
+        headers: getAuthHeaders(),
         body: fd,
       });
 

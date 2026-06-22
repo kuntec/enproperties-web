@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { API_BASE_URL, API_BASE_IMAGE_URL } from "../../lib/api";
+import { API_BASE_URL, getAuthHeaders } from "../../lib/api";
 import { toast } from "sonner";
 
 export default function AgentLeads() {
@@ -24,7 +24,7 @@ const [newRemark, setNewRemark] = useState("");
 const [activeLeadId, setActiveLeadId] = useState<string | null>(null);
 
 const fetchRemarks = async (leadId: string) => {
-  const res = await fetch(`${API_BASE_URL}/leads/${leadId}/remarks`);
+  const res = await fetch(`${API_BASE_URL}/leads/${leadId}/remarks`, { headers: getAuthHeaders() });
   const data = await res.json();
   setRemarks(data.history || []);
   setActiveLeadId(leadId);
@@ -37,7 +37,7 @@ const handleAddRemark = async () => {
   console.log("Added by " + user?.id);  
   const res = await fetch(`${API_BASE_URL}/leads/${activeLeadId}/remarks`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...getAuthHeaders() },
     body: JSON.stringify({ message: newRemark, added_by: user?.id }),
   });
 
@@ -73,7 +73,7 @@ const handleAddRemark = async () => {
 
   const fetchLeads = async () => {
     setLoading(true);
-    const res = await fetch(`${API_BASE_URL}/leads/agent/${agentId}`);
+    const res = await fetch(`${API_BASE_URL}/leads/agent/${agentId}`, { headers: getAuthHeaders() });
     const data = await res.json();
     setMyLeads(data.myLeads || []);
     setUnassignedLeads(data.unassignedLeads || []);
@@ -83,7 +83,7 @@ const handleAddRemark = async () => {
   const handleTakeLead = async (leadId: string) => {
     const res = await fetch(`${API_BASE_URL}/leads/${leadId}/take`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
       body: JSON.stringify({ agentId }),
     });
   
@@ -100,7 +100,7 @@ const handleAddRemark = async () => {
   const deleteLead = async (id: string) => {
     if (!confirm("Are you sure you want to delete this lead?")) return;
 
-    const res = await fetch(`${API_BASE_URL}/leads/${id}`, { method: "DELETE" });
+    const res = await fetch(`${API_BASE_URL}/leads/${id}`, { method: "DELETE", headers: getAuthHeaders() });
     if (res.ok) {
       setLeads((prev) => prev.filter((l) => l._id !== id));
     } else {
@@ -119,7 +119,7 @@ const handleAddRemark = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/leads/${leadId}/transfer`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...getAuthHeaders() },
         body: JSON.stringify({ agent_email: transferEmail }),
       });
   

@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Bed, Bath, Square, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { API_BASE_IMAGE_URL } from '@/lib/api';
+import { getImageUrl } from '@/lib/api';
 
 interface PropertyCardProps {
   _id: string;
@@ -36,7 +36,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="relative">
         <img 
-          src={API_BASE_IMAGE_URL + image} 
+          src={getImageUrl(image)}
           alt={name}
           className="w-full h-48 object-cover"
         />

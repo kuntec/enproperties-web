@@ -9,33 +9,38 @@ import { API_BASE_URL } from "../../lib/api";
 const AgentLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("agent");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/auth/login`, {
+      const res = await fetch(`${API_BASE_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, role })
+        body: JSON.stringify({ email, password }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || "Login failed");
+        throw new Error(data.message || "Login failed");
       }
 
-      const data = await res.json();
+      if (data.role !== "Agent") {
+        throw new Error("This account is not an agent account.");
+      }
+
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      toast.success("Logged in successfully");      
+      localStorage.setItem("user", JSON.stringify(data));
+      toast.success("Logged in successfully");
       navigate("/agent/dashboard");
-    
     } catch (err: any) {
       toast.error(err.message || "Login error");
+    } finally {
+      setLoading(false);
     }
   };
 

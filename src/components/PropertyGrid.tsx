@@ -6,7 +6,11 @@ import axios from 'axios';
 import { API_BASE_URL } from '@/lib/api';
 import SearchBarUI from './SearchBarUI';
 
-const PropertyGrid: React.FC = () => {
+type PropertyGridProps = {
+  purpose?: 'Buy' | 'Rent';
+};
+
+const PropertyGrid: React.FC<PropertyGridProps> = ({ purpose }) => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -14,13 +18,14 @@ const PropertyGrid: React.FC = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/properties`);
-        const data = res.data.data.map((p: any) => ({
+        const res = await axios.get(`${API_BASE_URL}/properties`, {
+          params: purpose ? { purpose } : undefined,
+        });
+        const data = (res.data.properties || []).map((p: any) => ({
           ...p,
           image: Array.isArray(p.image) && p.image.length > 0 ? p.image[0] : '',
         }));
-        console.log(data);
-        setProperties(data);  // Adjust according to your API structure
+        setProperties(data);
       } catch (err: any) {
         console.error(err);
         setError('Failed to fetch properties');
@@ -30,7 +35,7 @@ const PropertyGrid: React.FC = () => {
     };
 
     fetchProperties();
-  }, []);
+  }, [purpose]);
 
  const onSearch = (data: any[]) => {
   const response = data.map((p: any) => ({

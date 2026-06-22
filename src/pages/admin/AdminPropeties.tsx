@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL, API_BASE_IMAGE_URL } from '../../lib/api';
+import { API_BASE_URL, getAuthHeaders, getImageUrl } from '../../lib/api';
 import DeleteModal from "./DeleteModal";
 
 
@@ -27,8 +27,10 @@ export default function AdminProperties() {
 
   const fetchProperties = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/properties?page=${page}&limit=10`);
-      setProperties(res.data.data);
+      const res = await axios.get(`${API_BASE_URL}/properties?page=${page}&limit=10&includeAll=true`, {
+        headers: getAuthHeaders(),
+      });
+      setProperties(res.data.properties);
       setTotalPages(res.data.totalPages);
       
     } catch (err) {
@@ -40,7 +42,7 @@ export default function AdminProperties() {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`${API_BASE_URL}/properties/${id}`);
+      await axios.delete(`${API_BASE_URL}/properties/${id}`, { headers: getAuthHeaders() });
       setProperties((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
@@ -98,7 +100,7 @@ export default function AdminProperties() {
                    <td className="p-3 flex items-center gap-2">
         {prop.image?.[0] && (
           <img
-            src={`${API_BASE_IMAGE_URL}${prop.image[0]}`}
+            src={getImageUrl(prop.image[0])}
             alt={prop.image[0]}
             className="h-10 w-14 object-cover rounded"
           />
@@ -215,7 +217,7 @@ export default function AdminProperties() {
       >
         {prop.image?.[0] && (
           <img
-            src={`${API_BASE_IMAGE_URL}${prop.image[0]}`}
+            src={getImageUrl(prop.image[0])}
             alt={prop.name}
             className="h-40 w-full object-cover rounded-md mb-3"
           />
@@ -273,7 +275,7 @@ export default function AdminProperties() {
             <td className="p-3 flex items-center gap-2">
               {prop.image?.[0] && (
                 <img
-                  src={`${API_BASE_IMAGE_URL}${prop.image[0]}`}
+                  src={getImageUrl(prop.image[0])}
                   alt={prop.name}
                   className="h-10 w-14 object-cover rounded"
                 />

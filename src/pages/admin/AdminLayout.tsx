@@ -14,7 +14,7 @@ const items = [
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false); // for small screens
   const [desktopSidebar, setDesktopSidebar] = useState(true); // for large screens
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -24,19 +24,16 @@ export default function AdminLayout({ children }) {
     navigate("/admin/login");
   };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const userStr = localStorage.getItem("user");
-  //   const role = userStr ? JSON.parse(userStr).role : null;
-  //   if (!token) {
-  //     navigate("/admin/login");
-  //   } else {
-  //     if (role !== "admin") {
-  //       navigate("/admin/login");
-  //     }
-  //     setIsLoading(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
+    const role = userStr ? JSON.parse(userStr).role : null;
+    if (!token || role !== "Admin") {
+      navigate("/admin/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
 
   if (isLoading) return null;
 

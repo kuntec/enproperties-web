@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL, API_BASE_IMAGE_URL } from "../../lib/api";
+import { API_BASE_URL, getAuthHeaders, getImageUrl } from "../../lib/api";
 import { toast } from 'sonner';
 
 export default function EditAgent() {
@@ -31,7 +31,7 @@ export default function EditAgent() {
           licenseNo: data.licenseNo || "",
           experience: data.experience || "",
           status: data.status || "active",
-          imagePreview: data.image ? `${API_BASE_IMAGE_URL}/${data.image}` : "",
+          imagePreview: data.image ? getImageUrl(data.image) : "",
         }));
       });
   }, [id]);
@@ -72,6 +72,7 @@ export default function EditAgent() {
     try {
       const res = await fetch(`${API_BASE_URL}/agents/${id}`, {
         method: "PUT",
+        headers: getAuthHeaders(),
         body: fd,
       });
 

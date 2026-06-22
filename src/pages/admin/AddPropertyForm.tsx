@@ -47,7 +47,7 @@ type FormValues = {
   off_plan_details_original_price: string;
   off_plan_details_amount_paid : string;
 };
-import { API_BASE_URL } from '../../lib/api';
+import { API_BASE_URL, getAuthHeaders } from '../../lib/api';
 
 const API_URL = `${API_BASE_URL}/properties`; // <-- change to match your route
 
@@ -72,8 +72,8 @@ export default function AddPropertyForm() {
       type: "Apartment",
       purpose: "Buy",
       furnished: "No",
-      visibility: "public",
-      status: "active",
+      visibility: "Public",
+      status: "Available",
     },
   });
 
@@ -205,6 +205,7 @@ export default function AddPropertyForm() {
     // Important: DO NOT set Content-Type; browser will set multipart boundary
     const res = await fetch(API_URL, {
       method: "POST",
+      headers: getAuthHeaders(),
       body: fd,
     });
 
@@ -528,16 +529,17 @@ export default function AddPropertyForm() {
               <div className="flex items-center justify-between">
                 <span>Status</span>
                 <select {...register("status")} className="rounded border px-2 py-1 text-sm capitalize">
-                  <option value="active">active</option>
-                  <option value="inactive">inactive</option>
+                  <option value="Available">Available</option>
+                  <option value="Rented">Rented</option>
+                  <option value="Sold">Sold</option>
+                  <option value="Under management">Under management</option>
                 </select>
               </div>
               <div className="flex items-center justify-between">
                 <span>Visibility</span>
                 <select {...register("visibility")} className="rounded border px-2 py-1 text-sm capitalize">
-                  <option value="public">public</option>
-                  <option value="private">private</option>
-                  <option value="draft">draft</option>
+                  <option value="Public">Public</option>
+                  <option value="Private">Private</option>
                 </select>
               </div>
               <div>

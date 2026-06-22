@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { API_BASE_URL, API_BASE_IMAGE_URL } from "../../lib/api";
+import { API_BASE_URL, getAuthHeaders } from "../../lib/api";
 import DeleteModal from "./DeleteModal";
 
 export default function AdminLeads() {
@@ -14,7 +14,7 @@ export default function AdminLeads() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
 const fetchLeadHistory = async (leadId: string) => {
-  const res = await fetch(`${API_BASE_URL}/leads/${leadId}/remarks`);
+  const res = await fetch(`${API_BASE_URL}/leads/${leadId}/remarks`, { headers: getAuthHeaders() });
   if (res.ok) {
     const data = await res.json();
     const lead = leads.find(l => l._id === leadId);
@@ -29,7 +29,7 @@ const fetchLeadHistory = async (leadId: string) => {
 
   const fetchLeads = async () => {
     setLoading(true);
-    const res = await fetch(`${API_BASE_URL}/leads`);
+    const res = await fetch(`${API_BASE_URL}/leads`, { headers: getAuthHeaders() });
     const data = await res.json();
     setLeads(data.leads || []);
     setLoading(false);
@@ -37,7 +37,7 @@ const fetchLeadHistory = async (leadId: string) => {
 
   const handleDelete = async (id: string) => {
     try{
-      const res = await fetch(`${API_BASE_URL}/leads/${id}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE_URL}/leads/${id}`, { method: "DELETE", headers: getAuthHeaders() });
       if (res.ok) {
         setLeads((prev) => prev.filter((l) => l._id !== id));
         setShowModal(false);

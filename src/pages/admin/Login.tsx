@@ -9,39 +9,38 @@ import { API_BASE_URL } from "../../lib/api";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("admin");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
+      const res = await fetch(`${API_BASE_URL}/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      if (data.role !== "Admin") {
+        throw new Error("This account is not an admin account.");
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data));
+      toast.success("Logged in successfully");
       navigate("/admin/dashboard");
-      // const res = await fetch(`${API_BASE_URL}/auth/login`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ email, password, role })
-      // });
-
-      // if (!res.ok) {
-      //   const err = await res.json();
-      //   throw new Error(err.message || "Login failed");
-      // }
-
-      // const data = await res.json();
-      // localStorage.setItem("token", data.token);
-      // localStorage.setItem("isLogin", "true");
-      // localStorage.setItem("user", JSON.stringify(data.user));
-      // toast.success("Logged in successfully");
-
-      // if (data.user.role === "admin") {
-      //   navigate("/admin/dashboard");
-      // } else {
-      //   navigate("/agent/dashboard");
-      // }
     } catch (err: any) {
       toast.error(err.message || "Login error");
+    } finally {
+      setLoading(false);
     }
   };
 

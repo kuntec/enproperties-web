@@ -25,7 +25,7 @@ const Buy: React.FC = () => {
         </div>
       </section>
 
-      <PropertyGrid />
+      <PropertyGrid purpose="Buy" />
           
       <CompanyInfo />
       <Footer />

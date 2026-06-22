@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../../lib/api"; // adjust the path
+import { API_BASE_URL, getAuthHeaders } from "../../lib/api"; // adjust the path
 import { toast } from 'sonner';
 
 interface Agent {
@@ -34,7 +34,7 @@ export default function EditLead() {
   // Fetch current lead
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`${API_BASE_URL}/leads/${id}`);
+      const res = await fetch(`${API_BASE_URL}/leads/${id}`, { headers: getAuthHeaders() });
       const data = await res.json();
       setLead(data);
       setLoading(false);
@@ -62,7 +62,7 @@ export default function EditLead() {
     try {
       const res = await fetch(`${API_BASE_URL}/leads/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...getAuthHeaders() },
         body: JSON.stringify(lead),
       });
 

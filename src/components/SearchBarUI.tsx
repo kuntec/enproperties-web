@@ -29,7 +29,7 @@ export default function SearchBarUI({ onSearch }: { onSearch: (data: any[]) => v
       params: query,
     });
 
-    onSearch(res.data.data);
+    onSearch(res.data.properties || []);
 
   };
 

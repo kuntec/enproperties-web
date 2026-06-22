@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { API_BASE_URL, API_BASE_IMAGE_URL } from '../../lib/api';
+import { API_BASE_URL, getImageUrl } from '../../lib/api';
 
 
 export default function ViewProperty() {
@@ -38,8 +38,8 @@ export default function ViewProperty() {
           {property.image.map((img: string, idx: number) => (
             <img
               key={idx}
-              src={`${API_BASE_IMAGE_URL}${img}`}
-              alt={`${API_BASE_IMAGE_URL}${img}`}
+              src={getImageUrl(img)}
+              alt={`Property image ${img}`}
               className="w-full h-52 object-cover rounded"
             />
           ))}
@@ -106,8 +106,8 @@ export default function ViewProperty() {
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-2">QR Code</h2>
           <img
-            src={`${API_BASE_IMAGE_URL}${property.QRcode}`}
-            alt={`${API_BASE_IMAGE_URL}${property.QRcode}`}
+            src={getImageUrl(property.QRcode)}
+            alt="QR code"
             className="w-32 h-32 object-contain border rounded"
           />
         </div>

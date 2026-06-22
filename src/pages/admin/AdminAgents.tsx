@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { API_BASE_URL, API_BASE_IMAGE_URL } from "../../lib/api";
+import { API_BASE_URL, getAuthHeaders, getImageUrl } from "../../lib/api";
 import DeleteModal from "./DeleteModal";
 import axios from "axios";
 
@@ -26,7 +26,7 @@ export default function AdminAgents() {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`${API_BASE_URL}/agents/${id}`);
+      await axios.delete(`${API_BASE_URL}/agents/${id}`, { headers: getAuthHeaders() });
       setAgents((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
@@ -47,6 +47,7 @@ export default function AdminAgents() {
     try {
       const res = await fetch(`${API_BASE_URL}/agents/${id}`, {
         method: "DELETE",
+        headers: getAuthHeaders(),
       });
   
       if (!res.ok) throw new Error("Failed to delete");
@@ -90,7 +91,7 @@ export default function AdminAgents() {
                 <td className="p-3">
                   {agent.image ? (
                     <img
-                      src={`${API_BASE_IMAGE_URL}/${agent.image}`}
+                      src={getImageUrl(agent.image)}
                       alt={agent.name}
                       className="h-10 w-10 rounded-full object-cover"
                     />

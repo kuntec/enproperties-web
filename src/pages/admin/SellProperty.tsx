@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API_BASE_URL } from "../../lib/api";
+import { API_BASE_URL, getAuthHeaders } from "../../lib/api";
 import DeleteModal from "./DeleteModal";
 import { toast } from "sonner";
 
@@ -13,10 +13,10 @@ export default function SellProperty() {
   const fetchRequests = async () => {
     setLoading(true);
     try {
-        console.log(`${API_BASE_URL}/sell`);
-        const res = await fetch(`${API_BASE_URL}/sell`);
+        const res = await fetch(`${API_BASE_URL}/sell`, {
+          headers: getAuthHeaders(),
+        });
         const data = await res.json();
-        console.log(data);
       setRequests(data || []);
     } catch (err) {
       console.error("Error fetching valuations:", err);
@@ -27,7 +27,10 @@ export default function SellProperty() {
 
   const deleteRequest = async (id: string) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/sell/${id}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE_URL}/sell/${id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
       if (res.ok) {
         setRequests((prev) => prev.filter((r) => r._id !== id));
         setShowModal(false);

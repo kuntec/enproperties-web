@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import { UploadCloud, X, Plus } from "lucide-react";
-import { API_BASE_URL, API_BASE_IMAGE_URL } from "../../lib/api";
+import { API_BASE_URL, getAuthHeaders, getImageUrl } from "../../lib/api";
 import { toast } from 'sonner';
 
 
@@ -107,6 +107,7 @@ export default function EditProperty() {
 
     const res = await fetch(`${API_BASE_URL}/properties/${id}`, {
       method: "PUT",
+      headers: getAuthHeaders(),
       body: fd,
     });
 
@@ -202,7 +203,7 @@ export default function EditProperty() {
           <p className="text-sm font-medium mb-1">Existing Images:</p>
           <div className="flex flex-wrap gap-2">
             {existingImages.map((img, i) => (
-              <img key={i} src={`${API_BASE_IMAGE_URL}${img}`} alt="img" className="w-24 h-24 object-cover rounded border" />
+              <img key={i} src={getImageUrl(img)} alt="img" className="w-24 h-24 object-cover rounded border" />
             ))}
           </div>
         </div>
@@ -218,7 +219,7 @@ export default function EditProperty() {
       {existingQR && (
         <div>
           <label className="text-sm font-medium mb-1 block">Current QR Code</label><br />
-          <img src={`${API_BASE_IMAGE_URL}${existingQR}`} alt="qr" className="w-24 h-24 object-contain mt-1 border rounded" />
+          <img src={getImageUrl(existingQR)} alt="qr" className="w-24 h-24 object-contain mt-1 border rounded" />
         </div>
       )}
   
